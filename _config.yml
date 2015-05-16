@@ -1,23 +1,24 @@
 # Dependencies
 markdown:         redcarpet
-highlighter:      pygments
+highlighter:         true
 
 # Permalinks
 permalink:        pretty
-relative_permalinks: true
 
 # Setup
-title:            Poole
-tagline:          The Jekyll Butler
-url:              http://getpoole.com
-paginate:         1
-baseurl:          /
+title:            CK Tan
+tagline:          'Bits in Rapid Transit'
+description:      'Blog on Data, Postgres, SQL, BI, etc.'
+url:              http://cktan.us/
+
 author:
-  name:           Mark Otto
-  url:            https://twitter.com/mdo
-  email:          markdotto@gmail.com
+  name:           'CK Tan'
+  url:            https://twitter.com/cktan
+
+paginate:         5
 
 # Custom vars
 version:          1.0.0
+
 github:
-  repo:           https://github.com/poole/poole
+  repo:           https://github.com/poole/lanyon
