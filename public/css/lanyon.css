@@ -37,15 +37,15 @@
 /* Prevent scroll on narrow devices */
 html,
 body {
-  overflow-x: hidden;
+    overflow-x: hidden;
 }
 
 html {
-  font-family: "PT Serif", Georgia, "Times New Roman", serif;
+    font-family: "Lora", serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "PT Sans", Helvetica, Arial, sans-serif;
+  font-family: "Droid Sans", sans-serif;
   font-weight: 400;
   color: #313131;
   letter-spacing: -.025rem;
@@ -82,7 +82,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 @media (min-width: 56rem) {
   .container {
-    max-width: 38rem;
+    max-width: 50rem;
   }
 }
 
