@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Creating the Date Dimension Table in Postgres
+title: Date Dimension Table in Postgres
 ---
 
 One of the first tables required for any Data Warehouse projects is

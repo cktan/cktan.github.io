@@ -41,14 +41,15 @@ body {
 }
 
 html {
-    font-family: "Lora", serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Droid Sans", sans-serif;
-  font-weight: 400;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  line-height: 1.25;
   color: #313131;
-  letter-spacing: -.025rem;
+  text-rendering: optimizeLegibility;
 }
 
 
