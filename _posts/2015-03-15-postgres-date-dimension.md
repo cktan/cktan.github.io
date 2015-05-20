@@ -5,15 +5,47 @@ comments: True
 ---
 
 One of the first dimension tables required for any Data Warehouse projects is
-the Date Dimension table. 
+the Date Dimension table. See [Calendar Date Dimensions @kimballgroup] (http://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/calendar-date-dimension/). 
 
 -----
+
+Here is the SQL statement that generates the Date Dimension table in Postgres. The table will look like this:
+
+| Date Dimension 
+| -------------- 
+| Column         | Type  | Description 
+| -------------- | ----- | ----------- 
+| date_key       | int   | A number corresponding to the date. e.g. 20150315. 
+| date           | date  | SQL date. 
+| y              | int   | Year in number, e.g. 2015. 
+| m              | int   | Month in number (1..12). 
+| d              | int   | Day of month (1..31). 
+| q              | int   | Quarter (1..4). 
+| h              | int   | First / second half of year (1 or 2). 
+| dow            | int   | Day of week (1..7). 
+| doy            | int   | Day of year (1..366). 
+| yow            | int   | Year of week. Can be different from y only during first week of the year. 
+| woy            | int   | Week of year (1..52). Note: first few days of the year may be week 52 of last year. 
+| doe            | int   | Day of epoch, a serial number. 
+| woe            | int   | Week of epoch, a serial number. 
+| moe            | int   | Month of epoch, a serial number. 
+| yoe            | int   | Year of epoch, a serial number. 
+| is_weekday     | bool  | True if Mon..Fri. 
+| is_weekend     | bool  | True if Sat..Sun. 
+| first_date_of_week | date | Date of Monday of this week. 
+| last_date_of_week | date | Date of Sunday of this week. 
+| yw                | text | e.g. 2015-W5 for week 5 of 2015. 
+| ym                | text | e.g. 2015-12 for December 2015. 
+| yq                | text | e.g. 2015-Q4 for Q4 of 2015. 
+
+
 
 ```sql
 
 create table datedim as
 with
 DR1 as (
+    -- You can change the range here!
     -- epoch starting 2000-01-01, for 10 years
     select n,
        '2000-01-01'::date as first_date,
@@ -60,18 +92,18 @@ WeekGroup as (
            max(date) as last_date_of_week from DR4 group by 1
 )
 select
-    to_char(date, 'YYYYMMDD')::int as key,
+    to_char(date, 'YYYYMMDD')::int as date_key,
     date,
-    y,                          -- year
-    m,                          -- month
-    dow as d,                   -- day of week
-    q,                          -- quarter
-    h,
-    dom,                        -- day of month
-    doy,                        -- day of year
+    y,                          -- year (YYYY)
+    m,                          -- month (1..12)
+    dom as d,                   -- day of month (1..31)
+    q,                          -- quarter (1..4)
+    h,				-- half (1..2)
+    dow,                        -- day of week (1..7)
+    doy,                        -- day of year (1..366)
     yow,                        -- year of week
     woy,                        -- week of year
-    doe,                        -- day of epoch
+    doe,                        -- day of epoch 
     DR4.woe,                    -- week of epoch
     DR4.moe,                    -- month of epoch
     yoe,                        -- year of epoch
