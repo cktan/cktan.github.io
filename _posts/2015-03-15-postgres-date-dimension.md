@@ -9,7 +9,7 @@ the Date Dimension table. See [Calendar Date Dimensions @kimballgroup] (http://w
 
 -----
 
-Here is the SQL statement that generates the Date Dimension table in Postgres. The table will look like this:s
+Here is the SQL statement that generates the Date Dimension table in Postgres. The table will look like this:
 
 ```
 Column             | Type | Description 
