@@ -38,10 +38,14 @@ last_date_of_week  | date | Date of Sunday of this week.
 yw                 | text | e.g. 2015-W5 for week 5 of 2015. 
 ym                 | text | e.g. 2015-12 for December 2015. 
 yq                 | text | e.g. 2015-Q4 for Q4 of 2015. 
+is_holiday         | bool | Holiday indicator.
 ```
 
-Here is the SQL statement. You can edit section `DR1` to set the starting date
-and the range of your date dimension. 
+Here is the SQL statement. You can edit section `DR1` to set the
+starting date and the range of your date dimension. If holiday is a
+significant attribute affecting your analysis (say you are in retail),
+you would also want to manually set the `is_holiday` flag of those
+dates.
 
 ```sql
 
