@@ -11,31 +11,32 @@ the Date Dimension table. See [Calendar Date Dimensions @kimballgroup] (http://w
 
 Here is the SQL statement that generates the Date Dimension table in Postgres. The table will look like this:
 
-| Column         | Type  | Description 
-| -------------- | ----- | ----------- 
-| date_key       | int   | A number corresponding to the date. e.g. 20150315. 
-| date           | date  | SQL date. 
-| y              | int   | Year in number, e.g. 2015. 
-| m              | int   | Month in number (1..12). 
-| d              | int   | Day of month (1..31). 
-| q              | int   | Quarter (1..4). 
-| h              | int   | First / second half of year (1 or 2). 
-| dow            | int   | Day of week (1..7). 
-| doy            | int   | Day of year (1..366). 
-| yow            | int   | Year of week. Can be different from y only during first week of the year. 
-| woy            | int   | Week of year (1..52). Note: first few days of the year may be week 52 of last year. 
-| doe            | int   | Day of epoch, a serial number. 
-| woe            | int   | Week of epoch, a serial number. 
-| moe            | int   | Month of epoch, a serial number. 
-| yoe            | int   | Year of epoch, a serial number. 
-| is_weekday     | bool  | True if Mon..Fri. 
-| is_weekend     | bool  | True if Sat..Sun. 
-| first_date_of_week | date | Date of Monday of this week. 
-| last_date_of_week | date | Date of Sunday of this week. 
-| yw                | text | e.g. 2015-W5 for week 5 of 2015. 
-| ym                | text | e.g. 2015-12 for December 2015. 
-| yq                | text | e.g. 2015-Q4 for Q4 of 2015. 
-
+```
+Column             | Type | Description 
+------------------ | ---- | ----------- 
+date_key           | int  | A number corresponding to the date. e.g. 20150315. 
+date               | date | SQL date. 
+y                  | int  | Year in number, e.g. 2015. 
+m                  | int  | Month in number (1..12). 
+d                  | int  | Day of month (1..31). 
+q                  | int  | Quarter (1..4). 
+h                  | int  | First / second half of year (1 or 2). 
+dow                | int  | Day of week (1..7). 
+doy                | int  | Day of year (1..366). 
+yow                | int  | Year of week. Can be different from y only during first week of the year. 
+woy                | int  | Week of year (1..52). Note: first few days of the year may be week 52 of last year. 
+doe                | int  | Day of epoch, a serial number. 
+woe                | int  | Week of epoch, a serial number. 
+moe                | int  | Month of epoch, a serial number. 
+yoe                | int  | Year of epoch, a serial number. 
+is_weekday         | bool | True if Mon..Fri. 
+is_weekend         | bool | True if Sat..Sun. 
+first_date_of_week | date | Date of Monday of this week. 
+last_date_of_week  | date | Date of Sunday of this week. 
+yw                 | text | e.g. 2015-W5 for week 5 of 2015. 
+ym                 | text | e.g. 2015-12 for December 2015. 
+yq                 | text | e.g. 2015-Q4 for Q4 of 2015. 
+```
 
 
 ```sql
