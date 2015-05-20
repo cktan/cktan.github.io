@@ -65,6 +65,6 @@ where hashtext(textin(record_out(t1))) = 12345;
 
 ```
 
-### Which one is better?
+### Which method is better?
 
 In general, the built-in EXCEPT clause works better. 

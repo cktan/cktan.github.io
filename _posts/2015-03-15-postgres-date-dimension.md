@@ -11,8 +11,6 @@ the Date Dimension table. See [Calendar Date Dimensions @kimballgroup] (http://w
 
 Here is the SQL statement that generates the Date Dimension table in Postgres. The table will look like this:
 
-| Date Dimension 
-| -------------- 
 | Column         | Type  | Description 
 | -------------- | ----- | ----------- 
 | date_key       | int   | A number corresponding to the date. e.g. 20150315. 
