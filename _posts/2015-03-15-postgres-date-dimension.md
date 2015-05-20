@@ -9,7 +9,7 @@ the Date Dimension table. See [Calendar Date Dimensions @kimballgroup] (http://w
 
 -----
 
-Here is the SQL statement that generates the Date Dimension table in Postgres. The table will look like this:s
+We want our date dimension table will look like this:
 
 ```
 Column             | Type | Description 
@@ -23,8 +23,10 @@ q                  | int  | Quarter (1..4).
 h                  | int  | First / second half of year (1 or 2). 
 dow                | int  | Day of week (1..7). 
 doy                | int  | Day of year (1..366). 
-yow                | int  | Year of week. Can be different from y only during first week of the year. 
-woy                | int  | Week of year (1..52). Note: first few days of the year may be week 52 of last year. 
+yow                | int  | Year of week.
+                   |      |  Can be different from y only during first week of the year. 
+woy                | int  | Week of year (1..52).
+                   |      | Note: first few days of the year may be week 52 of last year. 
 doe                | int  | Day of epoch, a serial number. 
 woe                | int  | Week of epoch, a serial number. 
 moe                | int  | Month of epoch, a serial number. 
@@ -38,6 +40,8 @@ ym                 | text | e.g. 2015-12 for December 2015.
 yq                 | text | e.g. 2015-Q4 for Q4 of 2015. 
 ```
 
+Here is the SQL statement. You can edit section `DR1` to set the starting date
+and the range of your date dimension. 
 
 ```sql
 
@@ -113,11 +117,21 @@ select
     last_date_of_month,         -- date of last day in month
     yow||'-W'||woy as yw,       -- e.g.2015-W5
     to_char(date, 'yyyy-mm') as ym, -- e.g. 2015-07
-    y||'-Q'||q as yq                -- e.g. 2015-Q3
+    y||'-Q'||q as yq,               -- e.g. 2015-Q3
+    0::bool as is_holiday
 from DR4
 join MonthGroup using (moe)
 join WeekGroup using (woe)
 ;
+
+-- Insert the *special date row* indicating invalid date
+-- All columns are NULL except the date_key field. 
+
+insert into datedim (date_key) values (99999999);
+
+-- Populate holidays manually.
+
+-- Populate other special dates manually.
 
 ```
 
