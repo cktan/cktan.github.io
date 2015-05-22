@@ -31,6 +31,17 @@ Note that an empty result set from the above query does not indicate
 that t1 and t2 are EQUAL. For that, we would also need to assert that
 t1 and t2 has the same cardinality, i.e., same number of rows.
 
+To get the true / false on equality:
+
+```sql
+select case
+    when exists (table t1 except table t2) then 'diff'
+    when exists (table t2 except table t1) then 'diff'
+	when (select count(*) from t1) != (select count(*) from t2) then 'diff'
+    else 'same' end;
+```	
+
+
 ### Method 2: Hash it ourselves
 
 ```sql
@@ -63,6 +74,21 @@ select *
 from t1     -- or t2
 where hashtext(textin(record_out(t1))) = 12345;
 
+```
+
+Here is a clever way concocted by Feng Tian (ftian@vitessedata) to tell if t1 equals t2 without
+any joins. It uses an agg to sum the 1's (coming from t1) and -1's (coming from t2) of the 
+same hash. Sum of non-zero means that particular record is not EQUAL, and we detect this 
+using the HAVING clause.
+
+
+```sql
+select h, sum(cnt) from (
+   select textin(record_out(t1)) as h, 1 as cnt from t1
+   union all
+   select textin(record_out(t2) as h, -1 as cnt from t2) foo
+group by h 
+having sum(cnt) <> 0;
 ```
 
 ### Which method is better?
