@@ -41,11 +41,18 @@ yq                 | text | e.g. 2015-Q4 for Q4 of 2015.
 is_holiday         | bool | Holiday indicator.
 ```
 
-Here is the SQL statement. You can edit section `DR1` to set the
-starting date and the range of your date dimension. If holiday is a
-significant attribute affecting your analysis (say you are in retail),
-you would also want to manually set the `is_holiday` flag of those
-dates.
+The SQL statement follows. A few things to note:
+
+* You can edit section `DR1` to set the starting date and the range of
+  your date dimension. In the code below, we start generating dates
+  from year 2000 through 2030.
+* A week starts from Monday (1) and ends on Sunday (7).
+* The first week of the year usually belongs to the previous year. For
+  example, on January 1, 2000, the year-of-week is 1999, and the week-of-year is 52.
+* You should add columns to this table to mark special dates such as
+  holidays and significant events of the company.
+
+
 
 ```sql
 
@@ -53,11 +60,11 @@ create table datedim as
 with
 DR1 as (
     -- You can change the range here!
-    -- epoch starting 2000-01-01, for 10 years
+    -- epoch starting 2000-01-01, for 30 years
     select n,
        '2000-01-01'::date as first_date,
        '2000-01-01'::date + n as date
-       from generate_series(0, 366*10) n
+       from generate_series(0, 366*30) n
 ),
 DR2 as (
     select *,

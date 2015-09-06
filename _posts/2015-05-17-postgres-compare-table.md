@@ -76,10 +76,11 @@ where hashtext(textin(record_out(t1))) = 12345;
 
 ```
 
-Here is a clever way concocted by Feng Tian (ftian@vitessedata) to tell if t1 equals t2 without
-any joins. It uses an agg to sum the 1's (coming from t1) and -1's (coming from t2) of the 
-same hash. Sum of non-zero means that particular record is not EQUAL, and we detect this 
-using the HAVING clause.
+**\[2015-05-22\]** Here is a clever way devised by Feng Tian
+(ftian at vitessedata.com) to tell if t1 equals t2 without any join. It uses
+an agg to sum the 1's (coming from t1) and -1's (coming from t2) of
+the same hash. Sum of non-zero means that particular record is missing
+from one or the other table, and we detect this using the HAVING clause.
 
 
 ```sql
@@ -93,4 +94,8 @@ having sum(cnt) <> 0;
 
 ### Which method is better?
 
-In general, the built-in EXCEPT clause works better. 
+In general, the built-in EXCEPT clause works better. In the worst
+case, the SQL implies each table needs to be scanned 2 times for the
+case when they are equal. When the tables are different, however, the
+query may finish much faster with only a partial scan.
+
