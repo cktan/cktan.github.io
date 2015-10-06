@@ -60,11 +60,12 @@ create table datedim as
 with
 DR1 as (
     -- You can change the range here!
-    -- epoch starting 2000-01-01, for 30 years
+    -- epoch starting 2000-01-03, for 30 years
+    -- must start on a Monday and end on a Sunday to avoid partial week
     select n,
-       '2000-01-01'::date as first_date,
-       '2000-01-01'::date + n as date
-       from generate_series(0, 366*30) n
+       '2000-01-03'::date as first_date,
+       '2000-01-03'::date + n as date
+       from generate_series(0, '2031-01-05'::date - '2000-01-03') n
 ),
 DR2 as (
     select *,
@@ -112,7 +113,7 @@ select
     m,                          -- month (1..12)
     dom as d,                   -- day of month (1..31)
     q,                          -- quarter (1..4)
-    h,				-- half (1..2)
+    h,              -- half (1..2)
     dow,                        -- day of week (1..7)
     doy,                        -- day of year (1..366)
     yow,                        -- year of week
