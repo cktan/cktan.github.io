@@ -127,7 +127,7 @@ select
     first_date_of_week,         -- date of Mon in week
     last_date_of_week,          -- date of Sun in week
     last_date_of_month,         -- date of last day in month
-    yow||'-W'||woy as yw,       -- e.g.2015-W5
+    yow||'-W'||LPAD(woy::text, '0', 2) as yw,       -- e.g.2015-W05
     to_char(date, 'yyyy-mm') as ym, -- e.g. 2015-07
     y||'-Q'||q as yq,               -- e.g. 2015-Q3
     0::bool as is_holiday
