@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Here There be Data</title>
-    <link>https://cktan.us/index.xml</link>
+    <link>http://cktan.us/index.xml</link>
     <description>Recent content on Here There be Data</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 20 Oct 2015 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://cktan.us/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://cktan.us/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Catalog Corruption in Greenplum DB</title>
-      <link>https://cktan.us/post/2015-10-20-greenplum-db-catalog-corruption-fix/</link>
+      <link>http://cktan.us/post/2015-10-20-greenplum-db-catalog-corruption-fix/</link>
       <pubDate>Tue, 20 Oct 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cktan.us/post/2015-10-20-greenplum-db-catalog-corruption-fix/</guid>
+      <guid>http://cktan.us/post/2015-10-20-greenplum-db-catalog-corruption-fix/</guid>
       <description>&lt;p&gt;Recently one of our clients experienced catalog corruption in
 Greenplum DB after a power outage.&lt;/p&gt;
 
@@ -76,10 +76,10 @@ $ gpstop -m; gpstart
     
     <item>
       <title>Comparing Tables in Postgres</title>
-      <link>https://cktan.us/post/2015-05-17-postgres-compare-table/</link>
+      <link>http://cktan.us/post/2015-05-17-postgres-compare-table/</link>
       <pubDate>Sun, 17 May 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cktan.us/post/2015-05-17-postgres-compare-table/</guid>
+      <guid>http://cktan.us/post/2015-05-17-postgres-compare-table/</guid>
       <description>
 
 &lt;p&gt;How to tell if two tables are exactly the same?&lt;/p&gt;
@@ -172,10 +172,10 @@ query may finish much faster with only a partial scan.&lt;/p&gt;
     
     <item>
       <title>Date Dimension Table in Postgres</title>
-      <link>https://cktan.us/post/2015-03-15-postgres-date-dimension/</link>
+      <link>http://cktan.us/post/2015-03-15-postgres-date-dimension/</link>
       <pubDate>Sun, 15 Mar 2015 00:00:00 +0000</pubDate>
       
-      <guid>https://cktan.us/post/2015-03-15-postgres-date-dimension/</guid>
+      <guid>http://cktan.us/post/2015-03-15-postgres-date-dimension/</guid>
       <description>&lt;p&gt;One of the first dimension tables required for any Data Warehouse project is
 the Date Dimension table. See &lt;a href=&#34;http://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/calendar-date-dimension/&#34;&gt;Calendar Date Dimensions @kimballgroup&lt;/a&gt;.&lt;/p&gt;
 
