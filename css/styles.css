@@ -1,7 +1,7 @@
 @import 'https://fonts.googleapis.com/css?family=Fjalla+One|Inconsolata';
 
 body {
-  width: 600px;
+  width: 800px;
   margin: 0 auto;
   font-size: 16px;
   font-weight: 400;
@@ -102,7 +102,6 @@ section h3 a {
 section time {
   margin: 0 0 0 2px;
   font-size: 0.7rem;
-  font-weight: 600;
 }
 
 section article {
