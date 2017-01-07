@@ -22,19 +22,19 @@ Greenplum DB after a power outage.&lt;/p&gt;
 even though normal SQL submission still works, &lt;code&gt;pg_dump&lt;/code&gt; was failing
 with an error like this:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ pg_dump -t TABNAME DBNAME &amp;gt; /dev/null
-pg_dump: schema with OID 12345678 does not exist
+&lt;pre&gt;&lt;code&gt;    $ pg_dump -t TABNAME DBNAME &amp;gt; /dev/null
+    pg_dump: schema with OID 12345678 does not exist
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;First, determine what needs to be fixed. Fire up &lt;code&gt;psql&lt;/code&gt; and check:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;select oid from pg_type where typnamespace = 12345678;
-select oid from pg_class where relnamespace = 12345678;
-select oid from pg_operator where oprnamespace = 12345678;
-select oid from pg_conversion where connamespace = 12345678;
-select oid from pg_opclass where opcnamespace = 12345678;
-select oid from pg_aggregate where aggnamespace = 12345678;
-select oid from pg_proc where procnamespace = 12345678;
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;    select oid from pg_type where typnamespace = 12345678;
+    select oid from pg_class where relnamespace = 12345678;
+    select oid from pg_operator where oprnamespace = 12345678;
+    select oid from pg_conversion where connamespace = 12345678;
+    select oid from pg_opclass where opcnamespace = 12345678;
+    select oid from pg_aggregate where aggnamespace = 12345678;
+    select oid from pg_proc where procnamespace = 12345678;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;If any of the above queries returned a row, we can attempt to fix the
@@ -43,31 +43,31 @@ corruption by deleting the offending entries.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;WARNING: THE FOLLOWING PROCEDURE SHOULD NOT BE DONE LIGHTLY.
 CONTACT YOUR SERVICE REP TO HELP YOU BACKUP DATABASE BEFORE PROCEEDING.&lt;/strong&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;# Step 1: Shutdown GPDB
-$ gpstop -M immediate
+&lt;pre&gt;&lt;code&gt;    # Step 1: Shutdown GPDB
+    $ gpstop -M immediate
 
-# Step 2: Restart GPDB master in *utility* mode:
-$ gpstart -m
+    # Step 2: Restart GPDB master in *utility* mode:
+    $ gpstart -m
 
-# Step 3: Connect to the master in utility mode for catalog maintenance:
-$ PGOPTION=&#39;-c gp_session_role=utility&#39; psql DBNAME
+    # Step 3: Connect to the master in utility mode for catalog maintenance:
+    $ PGOPTION=&#39;-c gp_session_role=utility&#39; psql DBNAME
 
--- set the GUC to enable catalog updates. THIS IS NOT OBVIOUS!
-set allow_system_table_mods=dml;
+    -- set the GUC to enable catalog updates. THIS IS NOT OBVIOUS!
+    set allow_system_table_mods=dml;
 
--- perform the updates
-delete pg_type where typnamespace = 12345678;
-delete pg_class where relnamespace = 12345678;
-delete pg_operator where oprnamespace = 12345678;
-delete pg_conversion where connamespace = 12345678;
-delete pg_opclass where opcnamespace = 12345678;
-delete pg_aggregate where aggnamespace = 12345678;
-delete pg_proc where procnamespace = 12345678;
+    -- perform the updates
+    delete pg_type where typnamespace = 12345678;
+    delete pg_class where relnamespace = 12345678;
+    delete pg_operator where oprnamespace = 12345678;
+    delete pg_conversion where connamespace = 12345678;
+    delete pg_opclass where opcnamespace = 12345678;
+    delete pg_aggregate where aggnamespace = 12345678;
+    delete pg_proc where procnamespace = 12345678;
 
-\quit
+    \quit
 
-# Step 5: Restart GPDB:
-$ gpstop -m; gpstart
+    # Step 5: Restart GPDB:
+    $ gpstop -m; gpstart
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;em&gt;Good luck!&lt;/em&gt;&lt;/p&gt;
