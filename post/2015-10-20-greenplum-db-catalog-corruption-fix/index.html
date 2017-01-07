@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <base href="">
+
+    <title></title>
+
+    <link
+      rel="canonical"
+      href=""
+    />
+
+    <link
+      href=""
+      rel="alternate"
+      type="application/rss+xml"
+      title=""
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/default.min.css"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js">
+    </script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/css/styles.css"
+    />
+</head>
+
+<section id="header">
+  <h1>
+    <a href="https://cktan.us/">Here There be Data</a>
+  </h1>
+  <h2>by CK Tan</h2>
+</section>
+
+
+<div id="post">
+<section>
+  <h2>Catalog Corruption in Greenplum DB</h2>
+  <time>20 October, 2015</time>
+</section>
+<section>
+  <article>
+    <p>Recently one of our clients experienced catalog corruption in
+Greenplum DB after a power outage.</p>
+
+<p>When the GPDB was restarted, a catalog corruption had manifested, and
+even though normal SQL submission still works, <code>pg_dump</code> was failing
+with an error like this:</p>
+
+<pre><code>$ pg_dump -t TABNAME DBNAME &gt; /dev/null
+pg_dump: schema with OID 12345678 does not exist
+</code></pre>
+
+<p>First, determine what needs to be fixed. Fire up <code>psql</code> and check:</p>
+
+<pre><code>select oid from pg_type where typnamespace = 12345678;
+select oid from pg_class where relnamespace = 12345678;
+select oid from pg_operator where oprnamespace = 12345678;
+select oid from pg_conversion where connamespace = 12345678;
+select oid from pg_opclass where opcnamespace = 12345678;
+select oid from pg_aggregate where aggnamespace = 12345678;
+select oid from pg_proc where procnamespace = 12345678;
+</code></pre>
+
+<p>If any of the above queries returned a row, we can attempt to fix the
+corruption by deleting the offending entries.</p>
+
+<p><strong>WARNING: THE FOLLOWING PROCEDURE SHOULD NOT BE DONE LIGHTLY.
+CONTACT YOUR SERVICE REP TO HELP YOU BACKUP DATABASE BEFORE PROCEEDING.</strong></p>
+
+<pre><code># Step 1: Shutdown GPDB
+$ gpstop -M immediate
+
+# Step 2: Restart GPDB master in *utility* mode:
+$ gpstart -m
+
+# Step 3: Connect to the master in utility mode for catalog maintenance:
+$ PGOPTION='-c gp_session_role=utility' psql DBNAME
+
+-- set the GUC to enable catalog updates. THIS IS NOT OBVIOUS!
+set allow_system_table_mods=dml;
+
+-- perform the updates
+delete pg_type where typnamespace = 12345678;
+delete pg_class where relnamespace = 12345678;
+delete pg_operator where oprnamespace = 12345678;
+delete pg_conversion where connamespace = 12345678;
+delete pg_opclass where opcnamespace = 12345678;
+delete pg_aggregate where aggnamespace = 12345678;
+delete pg_proc where procnamespace = 12345678;
+
+\quit
+
+# Step 5: Restart GPDB:
+$ gpstop -m; gpstart
+</code></pre>
+
+<p><em>Good luck!</em></p>
+
+  </article>
+</section>
+</div>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'cktan';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
