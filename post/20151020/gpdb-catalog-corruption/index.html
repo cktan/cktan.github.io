@@ -92,7 +92,7 @@ CONTACT YOUR SERVICE REP TO HELP YOU BACKUP DATABASE BEFORE PROCEEDING.</strong>
     $ gpstart -m
 
     # Step 3: Connect to the master in utility mode for catalog maintenance:
-    $ PGOPTION='-c gp_session_role=utility' psql DBNAME
+    $ PGOPTIONS='-c gp_session_role=utility' psql DBNAME
 
     -- set the GUC to enable catalog updates. THIS IS NOT OBVIOUS!
     set allow_system_table_mods=dml;
